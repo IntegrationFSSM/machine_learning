@@ -3,6 +3,8 @@
 ## Description
 Ce projet vise à prédire la survie des passagers du Titanic en utilisant plusieurs modèles de Machine Learning (Régression Logistique, Random Forest, SVM) et en intégrant des pratiques MLOps avec **MLflow** pour le suivi des expériences.
 
+**Dépôt GitHub** : [https://github.com/IntegrationFSSM/machine_learning](https://github.com/IntegrationFSSM/machine_learning)
+
 ## Structure du Projet
 ```
 PROJET-TITANIC/
