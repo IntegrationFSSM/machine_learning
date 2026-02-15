@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/yassi/OneDrive/Bureau/Projet_Machine_Learning/PROJET-TITANIC/mlruns/819328963515529767/085b0667b227403e9795047e56a99ae0/artifacts
+end_time: 1771142855066
+entry_point_name: ''
+experiment_id: '819328963515529767'
+lifecycle_stage: active
+run_id: 085b0667b227403e9795047e56a99ae0
+run_name: Random_Forest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1771142846498
+status: 3
+tags: []
+user_id: yassi

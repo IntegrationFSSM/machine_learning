@@ -1,0 +1,183 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+
+% Configuration des en-têtes et pieds de page
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Projet Machine Learning & MLOps}
+\lhead{Yassine Ennhili}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    {\Large \textbf{Université Cadi Ayyad}}\\
+    {\Large \textbf{Faculté des Sciences Semlalia}}\\
+    \vspace{1cm}
+    % Placeholder pour logo si disponible
+    % \includegraphics[width=0.3\textwidth]{logo_uca.png}
+    \vspace{2cm}
+    
+    {\Huge \textbf{Rapport de Projet}}\\
+    \vspace{0.5cm}
+    {\Huge \textbf{Machine Learning \& MLOps}}\\
+    \vspace{0.5cm}
+    {\LARGE \textit{Prédiction de la survie des passagers du Titanic}}\\
+    
+    \vspace{3cm}
+    
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+            \textbf{Réalisé par :}\\
+            Yassine \textsc{Ennhili}
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushright} \large
+            \textbf{Encadré par :}\\
+            Pr. Fahd \textsc{Kalloubi}
+        \end{flushright}
+    \end{minipage}
+    
+    \vspace{4cm}
+    
+    {\large Année Universitaire 2025-2026}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction Générale}
+Le naufrage du Titanic est l'un des événements maritimes les plus marquants de l'histoire. Ce projet s'inscrit dans une démarche académique visant à appliquer les concepts avancés de Machine Learning et de MLOps pour prédire la survie des passagers.
+Au-delà de la simple modélisation, l'objectif est de construire un pipeline robuste, reproductible et industriel, intégrant le nettoyage des données, l'ingénierie des fonctionnalités (Feature Engineering) et le suivi des expériences via la plateforme MLflow.
+
+\section{Analyse Exploratoire et Prétraitement}
+
+\subsection{Description du Jeu de Données}
+Le dataset contient des informations sociodémographiques sur les passagers. La variable cible est \texttt{Survived} (0 = Décédé, 1 = Survivant).
+Les variables explicatives principales sont :
+\begin{itemize}
+    \item \textbf{Pclass} : Classe socio-économique (1ère, 2ème, 3ème).
+    \item \textbf{Sex} : Sexe du passager.
+    \item \textbf{Age} : Âge en années.
+    \item \textbf{SibSp / Parch} : Nombre de liens familiaux à bord.
+    \item \textbf{Fare} : Tarif payé.
+    \item \textbf{Embarked} : Port d'embarquement (C = Cherbourg, Q = Queenstown, S = Southampton).
+\end{itemize}
+
+\subsection{Pipeline de Nettoyage (Data Cleaning)}
+Les données brutes comportent des imperfections qu'il a fallu traiter :
+\begin{enumerate}
+    \item \textbf{Valeurs Manquantes (Missing Values)} :
+    \begin{itemize}
+        \item Pour la variable \texttt{Age}, nous avons opté une imputation par la \textbf{médiane}. Ce choix est robuste aux valeurs aberrantes contrairement à la moyenne.
+        \item Pour \texttt{Embarked}, les valeurs manquantes ont été remplacées par le mode (la valeur la plus fréquente).
+    \end{itemize}
+    \item \textbf{Suppression de variables} : Les colonnes \texttt{Cabin} (trop de vides), \texttt{Ticket} et \texttt{Name} (non structurées pour une première approche) ont été écartées.
+\end{enumerate}
+
+\subsection{Ingénierie des Fonctionnalités (Feature Engineering)}
+Afin de rendre les données exploitables par les algorithmes :
+\begin{itemize}
+    \item \textbf{Encodage (One-Hot Encoding)} : Les variables catégorielles comme \texttt{Sex} et \texttt{Embarked} ont été transformées en vecteurs binaires.
+    \item \textbf{Normalisation (Feature Scaling)} : Nous avons appliqué un \texttt{StandardScaler} ($z = \frac{x - \mu}{\sigma}$) pour centrer et réduire les variables numériques. Cette étape est cruciale pour les modèles sensibles aux distances comme les SVM et la Régression Logistique, afin d'éviter que les variables à forte amplitude (comme \texttt{Fare}) ne dominent le modèle.
+\end{itemize}
+
+\section{Approche Méthodologique et Modélisation}
+Nous avons implémenté et comparé trois familles d'algorithmes distinctes :
+
+\subsection{Régression Logistique}
+Modèle linéaire de référence pour la classification. Il estime la probabilité d'appartenance à la classe "Survivant" via une fonction sigmoïde. Son avantage principal réside dans son interprétabilité (poids des coefficients).
+
+\subsection{Random Forest (Forêts Aléatoires)}
+Méthode ensembliste basée sur le "Bagging". Elle construit une multitude d'arbres de décision sur des sous-ensembles aléatoires de données.
+\textbf{Avantages} :
+\begin{itemize}
+    \item Capture très bien les relations non-linéaires.
+    \item Robuste au surapprentissage (overfitting) grâce à la moyenne des arbres.
+    \item Fournit une mesure de l'importance des variables.
+\end{itemize}
+
+\subsection{Support Vector Machine (SVM)}
+Méthode à noyaux (Kernel Methods) cherchant à trouver l'hyperplan optimal séparant les deux classes avec la marge maximale. Nous avons utilisé un noyau RBF (Radial Basis Function) pour projeter les données dans un espace de dimension supérieure, permettant une séparation non-linéaire efficace.
+
+\section{Résultats et Analyse}
+
+\subsection{Comparaison des Performances Globales}
+Le graphique ci-dessous illustre l'accuracy obtenue pour chaque modèle sur l'ensemble de test.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/model_comparison.png}
+    \caption{Comparaison de l'Accuracy des modèles}
+    \label{fig:comparison}
+\end{figure}
+
+On observe généralement que le Random Forest performe légèrement mieux grâce à sa capacité à modéliser des structures complexes dans les données.
+
+\subsection{Analyse Approfondie : Matrices de Confusion}
+L'accuracy seule peut être trompeuse. Les matrices de confusion nous permettent de visualiser :
+\begin{itemize}
+    \item Les \textbf{Vrais Positifs (TP)} : Passagers correctement prédits comme survivants.
+    \item Les \textbf{Faux Négatifs (FN)} : Survivants prédits à tort comme décédés (erreur critique).
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/confusion_matrix_Random_Forest.png}
+        \caption{Matrice Confusion - Random Forest}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/confusion_matrix_SVM.png}
+        \caption{Matrice Confusion - SVM}
+    \end{minipage}
+\end{figure}
+
+\subsection{Courbes ROC et AUC}
+La courbe ROC (Receiver Operating Characteristic) évalue la capacité du modèle à discriminer les classes à différents seuils. Une aire sous la courbe (AUC) proche de 1 indique un modèle excellent.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/roc_curve_Random_Forest.png}
+    \caption{Courbe ROC - Random Forest}
+\end{figure}
+
+\subsection{Interprétabilité : Importance des Variables}
+L'un des atouts du Random Forest est de nous fournir l'importance relative des descripteurs.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/feature_importance_Random_Forest.png}
+    \caption{Feature Importance (Random Forest)}
+\end{figure}
+On constate typiquement que le \textbf{Sexe}, l'\textbf{Âge} et le \textbf{Tarif (Fare)} sont les déterminants majeurs de la survie, confirmant l'adage "Les femmes et les enfants d'abord".
+
+\section{Suivi MLOps avec MLflow}
+Pour garantir la reproductibilité scientifique, chaque expérimentation a été traquée avec MLflow.
+\begin{itemize}
+    \item \textbf{Paramètres} : Hyperparamètres des modèles (ex: \texttt{n\_estimators}, \texttt{C}, \texttt{kernel}).
+    \item \textbf{Métriques} : Accuracy, F1-Score, Precision, Recall.
+    \item \textbf{Artefacts} : Sauvegarde automatique des modèles sérialisés et des graphiques générés.
+\end{itemize}
+Cette approche permet de revenir à tout moment sur une version antérieure du modèle et de comparer objectivement les itérations.
+
+\section{Conclusion}
+Ce projet a permis de démontrer l'efficacité d'un pipeline MLOps complet. Le modèle \textbf{Random Forest} s'est avéré être le plus performant et le plus robuste. L'intégration de MLflow a structuré notre démarche expérimentale, transformant des scripts isolés en un workflow professionnel.
+Les perspectives d'amélioration incluent l'optimisation des hyperparamètres via GridSearch et l'exploration de modèles de Deep Learning.
+
+\end{document}

@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/yassi/OneDrive/Bureau/Projet_Machine_Learning/PROJET-TITANIC/mlruns/819328963515529767/models/m-50241cdd50fc46e8bf22eb074a37cd75/artifacts
+creation_timestamp: 1771142847133
+experiment_id: '819328963515529767'
+last_updated_timestamp: 1771142853968
+model_id: m-50241cdd50fc46e8bf22eb074a37cd75
+model_type: null
+name: model
+source_run_id: 085b0667b227403e9795047e56a99ae0
+status: 2
+status_message: null

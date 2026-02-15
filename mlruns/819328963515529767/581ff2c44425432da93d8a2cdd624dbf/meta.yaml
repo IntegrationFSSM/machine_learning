@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/yassi/OneDrive/Bureau/Projet_Machine_Learning/PROJET-TITANIC/mlruns/819328963515529767/581ff2c44425432da93d8a2cdd624dbf/artifacts
+end_time: 1771142797369
+entry_point_name: ''
+experiment_id: '819328963515529767'
+lifecycle_stage: active
+run_id: 581ff2c44425432da93d8a2cdd624dbf
+run_name: Logistic_Regression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1771142797262
+status: 4
+tags: []
+user_id: yassi

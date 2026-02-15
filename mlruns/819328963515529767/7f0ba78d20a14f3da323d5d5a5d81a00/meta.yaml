@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/yassi/OneDrive/Bureau/Projet_Machine_Learning/PROJET-TITANIC/mlruns/819328963515529767/7f0ba78d20a14f3da323d5d5a5d81a00/artifacts
+end_time: 1771142862787
+entry_point_name: ''
+experiment_id: '819328963515529767'
+lifecycle_stage: active
+run_id: 7f0ba78d20a14f3da323d5d5a5d81a00
+run_name: SVM
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1771142855094
+status: 3
+tags: []
+user_id: yassi
